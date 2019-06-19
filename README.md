@@ -5,7 +5,10 @@ This project makes use of [RawConsoleInput](https://github.com/zolrath/RawConsol
 
 Be aware that this project is still under developement.
 
+
 # Tutorial
+
+## Getting started
 To begin using this engine add TGE.dll under your projects dependencies.
 ```c#
     using System;
@@ -50,7 +53,7 @@ To begin using this engine add TGE.dll under your projects dependencies.
     }
 ```
 
-# Getting input
+## Getting input
 ```c#
 public override void Update()
 {
@@ -68,7 +71,7 @@ public override void Update()
 }
 ```
 
-# Drawing
+## Drawing
 ```c#
 public override void Draw()
 {
