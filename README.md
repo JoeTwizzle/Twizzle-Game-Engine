@@ -71,7 +71,7 @@ public override void Update()
 ```c#
 public override void Draw()
 {
-    //This will clear the screen.
+    //This will clear the screenbuffer.
     Screen.Clear();
     
     //Draws text to the screenbuffer at a given x and y position with a specific color.
