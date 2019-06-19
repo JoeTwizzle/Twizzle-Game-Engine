@@ -15,15 +15,16 @@ To begin using this engine add TGE.dll under your projects dependencies.
     {
         static void Main(string[] args)
         {
-            //Create a new Instance of your game
+            //Create a new Instance of your game.
             MyGame game = new MyGame();
+            
             //Start the game by initializing a new display and specifying the type of display,
             //font to use, width and height as well as font width and font height.
             //Currently only console displays are supported.
             game.Run(new Display(DisplayType.Console, "terminal", 160, 124, 8, 8));
         }
     }
-    //Create class deriving from TGE.Game and generate overrides
+    //Create class deriving from TGE.Game and generate overrides.
     class MyGame : Game
     {
         public override void Initialize()
@@ -59,7 +60,7 @@ public override void Update()
     {
         //Do something
     }
-    //GetKey lets you see if a key was pressed this frame, is held this frame or was released this frame
+    //GetKey lets you see if a key was pressed this frame, is held this frame or was released this frame.
     if (ConsoleInput.GetKey('W').Pressed)
     {
         //Do something
