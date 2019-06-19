@@ -1,6 +1,7 @@
 # Twizzle-Game-Engine
 A C# game engine similar to the OLC game engine
 
+This project makes use of [RawConsoleInput](https://github.com/zolrath/RawConsoleInput).
 
 Be aware that this project is still under developement.
 
