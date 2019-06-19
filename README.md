@@ -1,5 +1,5 @@
 # Twizzle-Game-Engine
-A C# game engine similar to the OLC game engine
+A C# game engine similar to the [OLC game engine](https://github.com/OneLoneCoder/videos/blob/master/olcConsoleGameEngine.h).
 
 This project makes use of [RawConsoleInput](https://github.com/zolrath/RawConsoleInput).
 
@@ -59,7 +59,7 @@ public override void Update()
     {
         //Do something
     }
-    //GetKey let's you see if a key was pressed this frame, is held this frame or was released this frame
+    //GetKey lets you see if a key was pressed this frame, is held this frame or was released this frame
     if (ConsoleInput.GetKey('W').Pressed)
     {
         //Do something
