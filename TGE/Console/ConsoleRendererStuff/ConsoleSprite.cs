@@ -12,7 +12,7 @@ namespace TGE
         public int Width;
         public int Height;
         char[,] chars;
-        byte[,] colors;
+        short[,] colors;
         public ConsoleSprite(int Width, int Height)
         {
             if (!Directory.Exists(AppDomain.CurrentDomain.BaseDirectory + "\\Sprites\\"))
@@ -21,10 +21,10 @@ namespace TGE
             }
             this.Width = Width;
             this.Height = Height;
-            colors = new byte[Width, Height];
+            colors = new short[Width, Height];
             chars = new char[Width, Height];
         }
-        public bool SetData(char[,] chars, byte[,] colors)
+        public bool SetData(char[,] chars, short[,] colors)
         {
             if (chars == null || colors == null)
             {
@@ -70,7 +70,7 @@ namespace TGE
             stream.Close();
             stream.Dispose();
         }
-        public void SetColor(int x, int y, byte color)
+        public void SetColor(int x, int y, short color)
         {
             if (x >= 0 && x < Width && y >= 0 && y < Height)
             {
@@ -84,7 +84,7 @@ namespace TGE
                 chars[x, y] = character;
             }
         }
-        public byte GetColor(int x, int y)
+        public short GetColor(int x, int y)
         {
             return colors[x, y];
         }

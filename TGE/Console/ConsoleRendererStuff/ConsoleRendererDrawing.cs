@@ -16,20 +16,34 @@ namespace TGE
         //Base Draw Method
         public override void Draw(char c, int X, int Y, short attribute)
         {
-            if (c != 0)
+            if (!IsInBounds(X, Y))
             {
-                if (!IsInBounds(X, Y))
-                {
-                    return;
-                }
-                if (c=='█')
-                {
-                    attribute |= (short)(attribute * 16);
-                }
-                //Height * width is to get to the correct spot (since this array is not two dimensions).
-                buf[(X) + (Y * Width)].Char.UnicodeChar = c;
-                buf[(X) + (Y * Width)].Attributes = attribute;
+                return;
             }
+            if (attribute == -1)
+            {
+                buf[(X) + (Y * Width)].Char.UnicodeChar = c;
+                return;
+            }
+            switch (c)
+            {
+                case '█':
+                    attribute |= (short)(attribute * 16);
+                    break;
+
+                case '\0':
+                    buf[(X) + (Y * Width)].Attributes = attribute;
+                    
+                    return;
+
+                default:
+                    break;
+            }
+            //Height * width is to get to the correct spot (since this array is not two dimensions).
+
+            buf[(X) + (Y * Width)].Char.UnicodeChar = c;
+            buf[(X) + (Y * Width)].Attributes = attribute;
+            
         }
 
         public override void Draw(char[] str, int Width, int Height, short attribute)
@@ -310,7 +324,7 @@ namespace TGE
 
         #region DrawCircle
 
-        public override void DrawCircle(char c,int xc, int yc, int r, short col)
+        public override void DrawCircle(char c, int xc, int yc, int r, short col)
         {
             int x = 0;
             int y = r;
@@ -319,14 +333,14 @@ namespace TGE
 
             while (y >= x) // only formulate 1/8 of circle
             {
-                Draw(c,xc - x, yc - y, col);//upper left left
-                Draw(c,xc - y, yc - x, col);//upper upper left
-                Draw(c,xc + y, yc - x, col);//upper upper right
-                Draw(c,xc + x, yc - y, col);//upper right right
-                Draw(c,xc - x, yc + y, col);//lower left left
-                Draw(c,xc - y, yc + x, col);//lower lower left
-                Draw(c,xc + y, yc + x, col);//lower lower right
-                Draw(c,xc + x, yc + y, col);//lower right right
+                Draw(c, xc - x, yc - y, col);//upper left left
+                Draw(c, xc - y, yc - x, col);//upper upper left
+                Draw(c, xc + y, yc - x, col);//upper upper right
+                Draw(c, xc + x, yc - y, col);//upper right right
+                Draw(c, xc - x, yc + y, col);//lower left left
+                Draw(c, xc - y, yc + x, col);//lower lower left
+                Draw(c, xc + y, yc + x, col);//lower lower right
+                Draw(c, xc + x, yc + y, col);//lower right right
                 if (p < 0) p += 4 * x++ + 6;
                 else p += 4 * (x++ - y--) + 10;
             }
@@ -344,10 +358,10 @@ namespace TGE
             while (y >= x)
             {
                 // Modified to draw scan-lines instead of edges
-                drawline(c,xc - x, xc + x, yc - y,col);
-                drawline(c,xc - y, xc + y, yc - x,col);
-                drawline(c,xc - x, xc + x, yc + y,col);
-                drawline(c,xc - y, xc + y, yc + x,col);
+                drawline(c, xc - x, xc + x, yc - y, col);
+                drawline(c, xc - y, xc + y, yc - x, col);
+                drawline(c, xc - x, xc + x, yc + y, col);
+                drawline(c, xc - y, xc + y, yc + x, col);
                 if (p < 0) p += 4 * x++ + 6;
                 else p += 4 * (x++ - y--) + 10;
             }
@@ -357,11 +371,11 @@ namespace TGE
         #region Clear
         public override void Clear()
         {
-            Parallel.For(0,buf.Length, i =>
-            {
-                buf[i].Attributes = 0;
-                buf[i].Char.UnicodeChar = ' ';
-            });
+            Parallel.For(0, buf.Length, i =>
+             {
+                 buf[i].Attributes = 0;
+                 buf[i].Char.UnicodeChar = ' ';
+             });
         }
 
         public override void clearRow(int row)

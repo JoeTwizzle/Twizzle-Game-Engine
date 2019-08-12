@@ -8,17 +8,14 @@ namespace TGE
 {
     public static class ConsoleRendererExtensions
     {
-        public static KeyValuePair<char, byte> getCharAt(ConsoleRenderer screen, int x, int y)
+        public static Tuple<char, short> getCharAt(ConsoleRenderer screen, int x, int y)
         {
-            if (x > screen.windowWidth)
+            if (x >= screen.windowWidth || y >= screen.windowHeight || x < 0 || y < 0)
             {
-                x = screen.windowWidth;
+                return null;
             }
-            if (y > screen.windowHeight)
-            {
-                y = screen.windowHeight;
-            }
-            return new KeyValuePair<char, byte>(screen.buf[((y * screen.Width + x))].Char.UnicodeChar, (byte)screen.buf[((y * screen.Width + x))].Attributes);
+
+            return new Tuple<char, short>(screen.buf[x + (y * screen.Width)].Char.UnicodeChar, screen.buf[x + (y * screen.Width)].Attributes);
         }
 
         public static void DrawConsoleSprite(ConsoleRenderer screen, ConsoleSprite sprite, int X, int Y)
@@ -37,13 +34,13 @@ namespace TGE
             {
                 for (int x1 = 0; x1 < (int)(sprite.Width * ScaleX - 1); x1++)
                 {
-                    int sampleX = (int)(x1 * (1f / ScaleX));
-                    int sampleY = (int)(y1 * (1f / ScaleY));
+                    int sampleX = (int)System.Math.Round((x1 * (1f / ScaleX)));
+                    int sampleY = (int)System.Math.Round((y1 * (1f / ScaleY)));
                     for (float y = 0; y < ScaleY; y += (1f / ScaleY))
                     {
                         for (float x = 0; x < ScaleX; x += (1f / ScaleX))
                         {
-                            screen.Draw(sprite.GetChar(sampleX, sampleY), (int)(x1 * ScaleX + x) + X, (int)(y1 * ScaleY + y) + Y, sprite.GetColor(sampleX, sampleY));
+                            screen.Draw(sprite.GetChar(sampleX, sampleY), (int)System.Math.Round((x1 * ScaleX + x) + X), (int)System.Math.Round((y1 * ScaleY + y) + Y), sprite.GetColor(sampleX, sampleY));
                         }
                     }
                 }

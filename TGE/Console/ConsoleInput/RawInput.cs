@@ -14,7 +14,7 @@ namespace TGE
             SetConsoleMode();
         }
 
-        void SetConsoleMode()
+         void SetConsoleMode()
         {
             _handler = NativeMethods.GetStdHandle(NativeMethods.STD_INPUT_HANDLE);
 
@@ -93,7 +93,7 @@ namespace TGE
 
         // Thanks to Josip Medved for this blog post/wrapping of NativeMethods
         // https://www.jmedved.com/2013/05/console-mouse-input-in-c/
-        private class NativeMethods
+        public class NativeMethods
         {
             public const Int32 STD_INPUT_HANDLE = -10;
 
@@ -154,6 +154,8 @@ namespace TGE
                 public Int32 dwControlKeyState;
             };
 
+
+
             public class ConsoleHandle : SafeHandleMinusOneIsInvalid
             {
                 public ConsoleHandle() : base(false) { }
@@ -164,6 +166,7 @@ namespace TGE
                 }
             }
 
+            
             [DllImport("kernel32.dll", SetLastError = true)]
             [return: MarshalAs(UnmanagedType.Bool)]
             public static extern Boolean GetConsoleMode(ConsoleHandle hConsoleHandle, ref Int32 lpMode);
@@ -176,9 +179,9 @@ namespace TGE
             public static extern Boolean ReadConsoleInput(ConsoleHandle hConsoleInput, ref INPUT_RECORD lpBuffer, UInt32 nLength, ref UInt32 lpNumberOfEventsRead);
 
             //Currently unused
-            //[DllImport("kernel32.dll", SetLastError = true)]
-            //[return: MarshalAs(UnmanagedType.Bool)]
-            //public static extern Boolean PeekConsoleInput(ConsoleHandle hConsoleInput, ref INPUT_RECORD lpBuffer, UInt32 nLength, ref UInt32 lpNumberOfEventsRead);
+            [DllImport("kernel32.dll", SetLastError = true)]
+            [return: MarshalAs(UnmanagedType.Bool)]
+            public static extern Boolean PeekConsoleInput(ConsoleHandle hConsoleInput, ref INPUT_RECORD lpBuffer, UInt32 nLength, ref UInt32 lpNumberOfEventsRead);
 
             [DllImport("kernel32.dll", SetLastError = true)]
             [return: MarshalAs(UnmanagedType.Bool)]

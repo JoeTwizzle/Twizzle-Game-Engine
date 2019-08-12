@@ -24,8 +24,86 @@ namespace TGE
     }
     public static class ColorChanger
     {
+
+        public static void ResetColors()
+        {
+            SetStandardPalette();
+            SetPalette(StandardColors);
+        }
+        public static void SetPalette(Palette palette)
+        {
+            SetStandardPalette();
+            for (int i = 0; i < 16; i++)
+            {
+                if (palette.colors[i].A != 0)
+                {
+                    SetColor(i, palette.colors[i]);
+                }
+            }
+        }
+        public static Palette StandardColors;
+        static void SetStandardPalette()
+        {
+            if (StandardColors != null)
+            {
+                return;
+            }
+            NativeMethods.CONSOLE_SCREEN_BUFFER_INFO_EX csbe = new NativeMethods.CONSOLE_SCREEN_BUFFER_INFO_EX();
+            csbe.cbSize = (int)Marshal.SizeOf(csbe);
+            IntPtr hConsoleOutput = NativeMethods.GetStdHandle(NativeMethods.STD_OUTPUT_HANDLE).DangerousGetHandle();
+            NativeMethods.GetConsoleScreenBufferInfoEx(hConsoleOutput, ref csbe);
+            Color[] colors = new Color[16];
+            colors[0] = csbe.black.GetColor();
+            colors[1] = csbe.darkBlue.GetColor();
+            colors[2] = csbe.darkGreen.GetColor();
+            colors[3] = csbe.darkCyan.GetColor();
+            colors[4] = csbe.darkRed.GetColor();
+            colors[5] = csbe.darkMagenta.GetColor();
+            colors[6] = csbe.darkYellow.GetColor();
+            colors[7] = csbe.gray.GetColor();
+            colors[8] = csbe.darkGray.GetColor();
+            colors[9] = csbe.blue.GetColor();
+            colors[10] = csbe.green.GetColor();
+            colors[11] = csbe.cyan.GetColor();
+            colors[12] = csbe.red.GetColor();
+            colors[13] = csbe.magenta.GetColor();
+            colors[14] = csbe.yellow.GetColor();
+            colors[15] = csbe.white.GetColor();
+            StandardColors = new Palette();
+            StandardColors.colors = colors;
+        }
+
+        public static Palette GetPalette()
+        {
+            SetStandardPalette();
+            NativeMethods.CONSOLE_SCREEN_BUFFER_INFO_EX csbe = new NativeMethods.CONSOLE_SCREEN_BUFFER_INFO_EX();
+            csbe.cbSize = (int)Marshal.SizeOf(csbe);
+            IntPtr hConsoleOutput = NativeMethods.GetStdHandle(NativeMethods.STD_OUTPUT_HANDLE).DangerousGetHandle();
+            NativeMethods.GetConsoleScreenBufferInfoEx(hConsoleOutput, ref csbe);
+            Color[] colors = new Color[16];
+            colors[0] = csbe.black.GetColor();
+            colors[1] = csbe.darkBlue.GetColor();
+            colors[2] = csbe.darkGreen.GetColor();
+            colors[3] = csbe.darkCyan.GetColor();
+            colors[4] = csbe.darkRed.GetColor();
+            colors[5] = csbe.darkMagenta.GetColor();
+            colors[6] = csbe.darkYellow.GetColor();
+            colors[7] = csbe.gray.GetColor();
+            colors[8] = csbe.darkGray.GetColor();
+            colors[9] = csbe.blue.GetColor();
+            colors[10] = csbe.green.GetColor();
+            colors[11] = csbe.cyan.GetColor();
+            colors[12] = csbe.red.GetColor();
+            colors[13] = csbe.magenta.GetColor();
+            colors[14] = csbe.yellow.GetColor();
+            colors[15] = csbe.white.GetColor();
+            Palette palette = new Palette();
+            palette.colors = colors;
+            return palette;
+        }
         public static Color GetColor(int color)
         {
+            SetStandardPalette();
             NativeMethods.CONSOLE_SCREEN_BUFFER_INFO_EX csbe = new NativeMethods.CONSOLE_SCREEN_BUFFER_INFO_EX();
             csbe.cbSize = (int)Marshal.SizeOf(csbe);
             IntPtr hConsoleOutput = NativeMethods.GetStdHandle(NativeMethods.STD_OUTPUT_HANDLE).DangerousGetHandle();
@@ -71,6 +149,7 @@ namespace TGE
 
         public static Color[] GetColors()
         {
+            SetStandardPalette();
             Color[] colors = new Color[16];
             NativeMethods.CONSOLE_SCREEN_BUFFER_INFO_EX csbe = new NativeMethods.CONSOLE_SCREEN_BUFFER_INFO_EX();
             csbe.cbSize = (int)Marshal.SizeOf(csbe);
@@ -97,14 +176,17 @@ namespace TGE
 
         public static int SetColor(ConsoleColor color, uint r, uint g, uint b)
         {
+            SetStandardPalette();
             return SetColor((int)color, r, g, b);
         }
         public static int SetColor(int consoleColor, Color targetColor)
         {
+            SetStandardPalette();
             return SetColor(consoleColor, targetColor.R, targetColor.G, targetColor.B);
         }
         public static int SetColor(int color, uint r, uint g, uint b)
         {
+            SetStandardPalette();
             NativeMethods.CONSOLE_SCREEN_BUFFER_INFO_EX csbe = new NativeMethods.CONSOLE_SCREEN_BUFFER_INFO_EX();
             csbe.cbSize = (int)Marshal.SizeOf(csbe);
             IntPtr hConsoleOutput = NativeMethods.GetStdHandle(NativeMethods.STD_OUTPUT_HANDLE).DangerousGetHandle();
@@ -181,11 +263,13 @@ namespace TGE
         }
         public static int SetColor(ConsoleColor consoleColor, Color targetColor)
         {
+            SetStandardPalette();
             return SetColor(consoleColor, targetColor.R, targetColor.G, targetColor.B);
         }
 
         public static int SetScreenColors(Color foregroundColor, Color backgroundColor)
         {
+            SetStandardPalette();
             int irc;
             irc = SetColor(ConsoleColor.Gray, foregroundColor);
             if (irc != 0) return irc;

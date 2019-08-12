@@ -14,6 +14,65 @@ namespace TGE
     {
         #region Structs
         [StructLayout(LayoutKind.Sequential)]
+        public struct POINT
+        {
+            public int X;
+            public int Y;
+
+            public POINT(int x, int y)
+            {
+                this.X = x;
+                this.Y = y;
+            }
+        }
+        [StructLayout(LayoutKind.Sequential)]
+        public struct RECT
+        {
+            public int Left, Top, Right, Bottom;
+
+            public RECT(int left, int top, int right, int bottom)
+            {
+                Left = left;
+                Top = top;
+                Right = right;
+                Bottom = bottom;
+            }
+
+            public int X
+            {
+                get { return Left; }
+                set { Right -= (Left - value); Left = value; }
+            }
+
+            public int Y
+            {
+                get { return Top; }
+                set { Bottom -= (Top - value); Top = value; }
+            }
+
+            public int Height
+            {
+                get { return Bottom - Top; }
+                set { Bottom = value + Top; }
+            }
+
+            public int Width
+            {
+                get { return Right - Left; }
+                set { Right = value + Left; }
+            }
+
+            public bool Equals(RECT r)
+            {
+                return r.Left == Left && r.Top == Top && r.Right == Right && r.Bottom == Bottom;
+            }
+
+            public override string ToString()
+            {
+                return string.Format(System.Globalization.CultureInfo.CurrentCulture, "{{Left={0},Top={1},Right={2},Bottom={3}}}", Left, Top, Right, Bottom);
+            }
+        }
+        [StructLayout(LayoutKind.Sequential)]
         internal struct COLORREF
         {
             internal uint ColorDWORD;
@@ -222,6 +281,36 @@ namespace TGE
                 return true;
             }
         }
+        public enum ConsoleDisplayMode : int
+        {
+            /// <summary>
+            /// Windowed mode.  The documentation erroneously says that windowed mode is value 2.
+            /// </summary>
+            Windowed = 0,
+            /// <summary>
+            /// Fullscreen mode.  The console occupies the entire screen.
+            /// </summary>
+            Fullscreen = 1,
+            /// <summary>
+            /// Fullscreen mode communicating directly with the video hardware.
+            /// This mode is set after the console has made the transition from
+            /// windowed mode to fullscreen mode.  Although this flag can be
+            /// returned by GetConsoleDisplayMode, you cannot set the flag when
+            /// calling SetConsoleDisplayMode.
+            /// </summary>
+            FullscreenHardware = 2
+        }
+        [DllImport("kernel32.dll", SetLastError = true)]
+        public static extern bool SetConsoleDisplayMode(IntPtr ConsoleOutput, uint Flags, out COORD NewScreenBufferDimensions);
+        [DllImport("kernel32.dll", SetLastError = true)]
+        public static extern bool GetConsoleDisplayMode(out ConsoleDisplayMode dwFlags);
+        [DllImport("user32.dll")]
+        public static extern bool GetClientRect(IntPtr hWnd, out RECT lpRect);
+        [DllImport("user32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool GetCursorPos(out POINT lpPoint);
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern bool GetWindowRect(IntPtr hwnd, out RECT lpRect);
         [DllImport("kernel32.dll", SetLastError = true)]
         public static extern bool GetConsoleScreenBufferInfoEx(IntPtr hConsoleOutput, ref NativeMethods.CONSOLE_SCREEN_BUFFER_INFO_EX csbe);
 

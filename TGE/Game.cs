@@ -40,13 +40,11 @@ namespace TGE
         delegate void InputType();
         public void Run(Display display)
         {
-            InputType b = new InputType(DummyInput);
             switch (display.displayType)
             {
                 case DisplayType.Console:
                     Screen = new ConsoleRenderer(display);
-                    ConsoleInput.Running = true;
-                    b = ConsoleInput.GetInput;
+                    Input.Running = true;
                     break;
 
                 case DisplayType.None:
@@ -56,12 +54,12 @@ namespace TGE
                 default:
                     break;
             }
-            
-            Thread InputThread = new Thread(new ThreadStart(b));
-            InputThread.Name = "InputThread";
-            InputThread.Priority = ThreadPriority.AboveNormal;
-            InputThread.SetApartmentState(ApartmentState.STA);
-            InputThread.Start();
+
+            //Thread InputThread = new Thread(new ThreadStart(b));
+            //InputThread.Name = "InputThread";
+            //InputThread.Priority = ThreadPriority.AboveNormal;
+            //InputThread.SetApartmentState(ApartmentState.STA);
+            //InputThread.Start();
 
             Running = true;
             Thread GameThread = new Thread(new ThreadStart(GameLoop));
@@ -87,14 +85,17 @@ namespace TGE
             tp1 = tp2;
         }
 
+        [STAThread]
         void GameLoop()
         {
             Time();
             Initialize();
+            Input.Start();
             Start();
             while (Running)
             {
                 Time();
+                Input.Update();
                 Update();
                 LateUpdate();
                 Draw();
