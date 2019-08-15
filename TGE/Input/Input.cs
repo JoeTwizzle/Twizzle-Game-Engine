@@ -28,11 +28,11 @@ namespace TGE
         static IntPtr HWnd = NativeMethods.GetConsoleWindow();
         public static bool Running;
         private static MouseState Mouse = new MouseState();
-        public static KeyboardUpdate keyboardUpdate = new KeyboardUpdate();
+        public static KeyboardUpdate[] keyboardUpdate;
         private static readonly KeyState[] keys = new KeyState[Enum.GetNames(typeof(Key)).Length];
 
-        static Keyboard keyboard;
-        static Mouse mouse;
+        public static Keyboard keyboard;
+        public static Mouse mouse;
 
          [STAThread]
         internal static void Start()
@@ -61,7 +61,7 @@ namespace TGE
             //var inputEvent = input.GetInput();
             keyboard.Poll();
             var kbData = keyboard.GetBufferedData();
-
+            keyboardUpdate = kbData;
             foreach (var state in kbData)
             {
                 ProcessKB(state);
@@ -134,13 +134,13 @@ namespace TGE
             Mouse = state;
             if (mode == NativeMethods.ConsoleDisplayMode.Fullscreen || mode == NativeMethods.ConsoleDisplayMode.FullscreenHardware)
             {
-                Mouse.X = (pos.X - (rect.X + 0)) / 8;
-                Mouse.Y = (pos.Y - (rect.Y + 0)) / 8;
+                Mouse.X = (pos.X - (rect.X + 0)) / Game.ActiveGame.Screen.PixelX;
+                Mouse.Y = (pos.Y - (rect.Y + 0)) / Game.ActiveGame.Screen.PixelY;
             }
             else
             {
-                Mouse.X = (pos.X - (rect.X + 8)) / 8;
-                Mouse.Y = (pos.Y - (rect.Y + 30)) / 8;
+                Mouse.X = (pos.X - (rect.X + 8)) / Game.ActiveGame.Screen.PixelX;
+                Mouse.Y = (pos.Y - (rect.Y + 30)) / Game.ActiveGame.Screen.PixelY;
             }
             Mouse.Z /= 120;
         }

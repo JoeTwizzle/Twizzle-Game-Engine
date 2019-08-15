@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 namespace TGE
 {
+    [Serializable]
     public struct Color
     {
         public static Color FromArgb(byte A, byte R, byte G, byte B)

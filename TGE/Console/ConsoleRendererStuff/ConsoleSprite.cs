@@ -45,18 +45,30 @@ namespace TGE
             this.colors = colors;
             return true;
         }
-        public static ConsoleSprite Load(string FileName)
+        public static ConsoleSprite Load(string FileName, bool absoluteDir = false)
         {
             BinaryFormatter formatter = new BinaryFormatter();
             if (!Directory.Exists(AppDomain.CurrentDomain.BaseDirectory + "\\Sprites\\"))
             {
                 return null;
             }
-            Stream stream = new FileStream(AppDomain.CurrentDomain.BaseDirectory + "\\Sprites\\" + FileName + ".cpr", FileMode.Open);
-            var sprite = (ConsoleSprite)formatter.Deserialize(stream);
-            stream.Close();
-            stream.Dispose();
-            return sprite;
+            if (!absoluteDir)
+            {
+                Stream stream = new FileStream(AppDomain.CurrentDomain.BaseDirectory + "\\Sprites\\" + FileName + ".cpr", FileMode.Open);
+                var sprite = (ConsoleSprite)formatter.Deserialize(stream);
+                stream.Close();
+                stream.Dispose();
+                return sprite;
+            }
+            else
+            {
+                Stream stream = new FileStream(FileName, FileMode.Open);
+                var sprite = (ConsoleSprite)formatter.Deserialize(stream);
+                stream.Close();
+                stream.Dispose();
+                return sprite;
+            }
+
         }
         public void Save(string FileName)
         {

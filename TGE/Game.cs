@@ -9,6 +9,7 @@ namespace TGE
 {
     public class Game
     {
+        public static Game ActiveGame;
         #region Fields
         public Display Screen { get; private set; }
         public bool Running { get; private set; }
@@ -88,6 +89,7 @@ namespace TGE
         [STAThread]
         void GameLoop()
         {
+            ActiveGame = this;
             Time();
             Initialize();
             Input.Start();
