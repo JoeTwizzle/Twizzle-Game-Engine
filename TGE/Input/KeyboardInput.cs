@@ -13,7 +13,7 @@ namespace TGE
         public bool IsActive = true;
         int cont = 20;
         int freq = 20;
-        public void Update()
+        public void Update(float deltaTime)
         {
             if (IsActive)
             {
