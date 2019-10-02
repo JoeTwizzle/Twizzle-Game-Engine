@@ -20,18 +20,42 @@ namespace TGE
                 colors[i] = Color.FromArgb(0, 0, 0, 0);
             }
         }
-        public static Palette Load(string FileName)
+        public static Palette Load(string FileName, DirectoryMode directoryMode)
         {
             BinaryFormatter formatter = new BinaryFormatter();
-            if (!Directory.Exists(AppDomain.CurrentDomain.BaseDirectory + "\\Palettes\\"))
+            switch (directoryMode)
             {
-                return null;
+                case DirectoryMode.Sprites:
+                    {
+                        if (!Directory.Exists(AppDomain.CurrentDomain.BaseDirectory + "\\Palettes\\"))
+                        {
+                            return null;
+                        }
+                        Stream stream = new FileStream(AppDomain.CurrentDomain.BaseDirectory + "\\Palettes\\" + FileName + ".pal", FileMode.Open);
+                        var sprite = (Palette)formatter.Deserialize(stream);
+                        stream.Close();
+                        stream.Dispose();
+                        return sprite;
+                    }
+                case DirectoryMode.Absolute:
+                    {
+                        Stream stream = new FileStream(FileName, FileMode.Open);
+                        var sprite = (Palette)formatter.Deserialize(stream);
+                        stream.Close();
+                        stream.Dispose();
+                        return sprite;
+                    }
+                case DirectoryMode.Custom:
+                    {
+                        Stream stream = new FileStream(AppDomain.CurrentDomain.BaseDirectory + FileName + ".pal", FileMode.Open);
+                        var sprite = (Palette)formatter.Deserialize(stream);
+                        stream.Close();
+                        stream.Dispose();
+                        return sprite;
+                    }
+                default:
+                    return null;
             }
-            Stream stream = new FileStream(AppDomain.CurrentDomain.BaseDirectory + "\\Palettes\\" + FileName + ".pal", FileMode.Open);
-            var sprite = (Palette)formatter.Deserialize(stream);
-            stream.Close();
-            stream.Dispose();
-            return sprite;
         }
         public void Save(string FileName)
         {

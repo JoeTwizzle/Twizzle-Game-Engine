@@ -29,7 +29,7 @@ namespace TGE
         public static bool Running;
         private static MouseState Mouse = new MouseState();
         public static KeyboardUpdate[] keyboardUpdate;
-        private static readonly KeyState[] keys = new KeyState[Enum.GetNames(typeof(Key)).Length];
+        private static readonly KeyState[] keys = new KeyState[256];
 
         public static Keyboard keyboard;
         public static Mouse mouse;
@@ -128,9 +128,12 @@ namespace TGE
         }
         static void ProcessMouse(MouseState state)
         {
-            NativeMethods.GetCursorPos(out NativeMethods.POINT pos);
-            NativeMethods.GetWindowRect(HWnd, out NativeMethods.RECT rect);
-            NativeMethods.GetConsoleDisplayMode(out NativeMethods.ConsoleDisplayMode mode);
+            NativeMethods.POINT pos;
+            NativeMethods.GetCursorPos(out pos);
+            NativeMethods.RECT rect;
+            NativeMethods.GetWindowRect(HWnd, out rect);
+            NativeMethods.ConsoleDisplayMode mode;
+            NativeMethods.GetConsoleDisplayMode(out mode);
             Mouse = state;
             if (mode == NativeMethods.ConsoleDisplayMode.Fullscreen || mode == NativeMethods.ConsoleDisplayMode.FullscreenHardware)
             {

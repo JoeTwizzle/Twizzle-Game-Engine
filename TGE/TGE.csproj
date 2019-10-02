@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>TGE</RootNamespace>
     <AssemblyName>TGE</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
@@ -68,6 +68,7 @@
     <Compile Include="Console\ConsoleInput\MouseInputEvent.cs" />
     <Compile Include="Console\ConsoleInput\RawInput.cs" />
     <Compile Include="Console\ConsoleInput\VirtualKeys.cs" />
+    <Compile Include="Input\KeyboardInput.cs" />
     <Compile Include="Math\Vector2.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="OpenGLRendererStuff\OpenGLRenderer.cs" />

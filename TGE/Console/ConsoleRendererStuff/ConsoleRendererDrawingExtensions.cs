@@ -20,6 +20,10 @@ namespace TGE
 
         public static void DrawConsoleSprite(ConsoleRenderer screen, ConsoleSprite sprite, int X, int Y)
         {
+            if (sprite == null)
+            {
+                return;
+            }
             Parallel.For(0, sprite.Height, y1 =>
             {
                 Parallel.For(0, sprite.Width, x1 =>

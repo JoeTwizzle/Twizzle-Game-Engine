@@ -6,6 +6,12 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace TGE
 {
+    public enum DirectoryMode
+    {
+        Sprites,
+        Absolute,
+        Custom
+    }
     [Serializable]
     public class ConsoleSprite
     {
@@ -45,30 +51,42 @@ namespace TGE
             this.colors = colors;
             return true;
         }
-        public static ConsoleSprite Load(string FileName, bool absoluteDir = false)
+        public static ConsoleSprite Load(string FileName, DirectoryMode directoryMode)
         {
             BinaryFormatter formatter = new BinaryFormatter();
-            if (!Directory.Exists(AppDomain.CurrentDomain.BaseDirectory + "\\Sprites\\"))
+            switch (directoryMode)
             {
-                return null;
+                case DirectoryMode.Sprites:
+                    {
+                        if (!Directory.Exists(AppDomain.CurrentDomain.BaseDirectory + "\\Sprites\\"))
+                        {
+                            return null;
+                        }
+                        Stream stream = new FileStream(AppDomain.CurrentDomain.BaseDirectory + "\\Sprites\\" + FileName + ".cpr", FileMode.Open);
+                        var sprite = (ConsoleSprite)formatter.Deserialize(stream);
+                        stream.Close();
+                        stream.Dispose();
+                        return sprite;
+                    }
+                case DirectoryMode.Absolute:
+                    {
+                        Stream stream = new FileStream(FileName, FileMode.Open);
+                        var sprite = (ConsoleSprite)formatter.Deserialize(stream);
+                        stream.Close();
+                        stream.Dispose();
+                        return sprite;
+                    }
+                case DirectoryMode.Custom:
+                    {
+                        Stream stream = new FileStream(AppDomain.CurrentDomain.BaseDirectory + FileName + ".cpr", FileMode.Open);
+                        var sprite = (ConsoleSprite)formatter.Deserialize(stream);
+                        stream.Close();
+                        stream.Dispose();
+                        return sprite;
+                    }
+                default:
+                    return null;
             }
-            if (!absoluteDir)
-            {
-                Stream stream = new FileStream(AppDomain.CurrentDomain.BaseDirectory + "\\Sprites\\" + FileName + ".cpr", FileMode.Open);
-                var sprite = (ConsoleSprite)formatter.Deserialize(stream);
-                stream.Close();
-                stream.Dispose();
-                return sprite;
-            }
-            else
-            {
-                Stream stream = new FileStream(FileName, FileMode.Open);
-                var sprite = (ConsoleSprite)formatter.Deserialize(stream);
-                stream.Close();
-                stream.Dispose();
-                return sprite;
-            }
-
         }
         public void Save(string FileName)
         {
