@@ -11,8 +11,8 @@ namespace TGE
         public bool IsShifted = false;
         public int MaxLength = 10000;
         public bool IsActive = true;
-        int cont = 20;
-        int freq = 20;
+        public float freq = 0.16f;
+        public float cont = 0.16f;
         public void Update(float deltaTime)
         {
             if (IsActive)
@@ -319,7 +319,7 @@ namespace TGE
                 //Backspace
                 if (Input.GetKey(Key.Back).Held)
                 {
-                    cont--;
+                    cont-= deltaTime;
                     if (Text.Length > 0 && cont <= 0)
                     {
                         Text = Text.Remove(Text.Length - 1, 1);

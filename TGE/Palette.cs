@@ -12,7 +12,13 @@ namespace TGE
     public class Palette
     {
         public Color[] colors = new Color[16];
-
+        public Palette(Color[] cols)
+        {
+            for (int i = 0; i < 16 && i < cols.Length; i++)
+            {
+                colors[i] = cols[i];
+            }
+        }
         public Palette()
         {
             for (int i = 0; i < 16; i++)

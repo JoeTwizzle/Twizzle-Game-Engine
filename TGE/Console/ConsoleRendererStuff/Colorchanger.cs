@@ -6,6 +6,17 @@ namespace TGE
     [Serializable]
     public struct Color
     {
+        public Color(IntPtr SourcePixel)
+        {
+            this = (Color)Marshal.PtrToStructure(SourcePixel, typeof(Color));
+        }
+        public Color(Color c)
+        {
+            this.A = c.A;
+            this.R = c.R;
+            this.G = c.G;
+            this.B = c.B;
+        }
         public static Color FromArgb(byte A, byte R, byte G, byte B)
         {
             return new Color { R = R, G = G, B = B, A = A };
@@ -34,7 +45,7 @@ namespace TGE
         public static void SetPalette(Palette palette)
         {
             SetStandardPalette();
-            for (int i = 0; i < 16; i++)
+            for (int i = 0; i < 16 && i < palette.colors.Length; i++)
             {
                 if (palette.colors[i].A != 0)
                 {

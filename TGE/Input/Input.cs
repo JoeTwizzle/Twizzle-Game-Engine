@@ -58,7 +58,6 @@ namespace TGE
             {
                  keys[i] = new KeyState() { Pressed = false, Held = keys[i].Held && !keys[i].Released, Released = false };
             }
-            //var inputEvent = input.GetInput();
             keyboard.Poll();
             var kbData = keyboard.GetBufferedData();
             keyboardUpdate = kbData;
