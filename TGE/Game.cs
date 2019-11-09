@@ -61,7 +61,7 @@ namespace TGE
             //InputThread.Priority = ThreadPriority.AboveNormal;
             //InputThread.SetApartmentState(ApartmentState.STA);
             //InputThread.Start();
-
+            NativeMethods.SetConsoleCtrlHandler(new NativeMethods.ExitHandler(Exit), true);
             Running = true;
             Thread GameThread = new Thread(new ThreadStart(GameLoop));
             GameThread.Name = "GameThread";
@@ -102,6 +102,7 @@ namespace TGE
                 LateUpdate();
                 Draw();
             }
+            Exit(NativeMethods.CtrlType.CTRL_CLOSE_EVENT);
         }
 
         public virtual void Initialize() { }
@@ -109,5 +110,6 @@ namespace TGE
         public virtual void Update() { }
         public virtual void LateUpdate() { }
         public virtual void Draw() { }
+        public virtual void Exit(NativeMethods.CtrlType ctrlType) { }
     }
 }

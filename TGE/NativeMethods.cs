@@ -300,6 +300,17 @@ namespace TGE
             /// </summary>
             FullscreenHardware = 2
         }
+        public enum CtrlType
+        {
+            CTRL_C_EVENT = 0,
+            CTRL_BREAK_EVENT = 1,
+            CTRL_CLOSE_EVENT = 2,
+            CTRL_LOGOFF_EVENT = 5,
+            CTRL_SHUTDOWN_EVENT = 6
+        }
+        public delegate void ExitHandler(CtrlType ctrlType);
+        [DllImport("Kernel32")]
+        public static extern bool SetConsoleCtrlHandler(ExitHandler handler, bool add);
         [DllImport("kernel32.dll", SetLastError = true)]
         public static extern bool SetConsoleDisplayMode(IntPtr ConsoleOutput, uint Flags, out COORD NewScreenBufferDimensions);
         [DllImport("kernel32.dll", SetLastError = true)]
