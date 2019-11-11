@@ -38,6 +38,7 @@ namespace TGE
             return;
         }
 
+        NativeMethods.ExitHandler exitHandler;
         delegate void InputType();
         public void Run(Display display)
         {
@@ -55,19 +56,18 @@ namespace TGE
                 default:
                     break;
             }
-
+            exitHandler = new NativeMethods.ExitHandler(OnExit);
             //Thread InputThread = new Thread(new ThreadStart(b));
             //InputThread.Name = "InputThread";
             //InputThread.Priority = ThreadPriority.AboveNormal;
             //InputThread.SetApartmentState(ApartmentState.STA);
             //InputThread.Start();
-            NativeMethods.SetConsoleCtrlHandler(new NativeMethods.ExitHandler(Exit), true);
+            NativeMethods.SetConsoleCtrlHandler(exitHandler, true);
             Running = true;
             Thread GameThread = new Thread(new ThreadStart(GameLoop));
             GameThread.Name = "GameThread";
             GameThread.Priority = ThreadPriority.AboveNormal;
             GameThread.Start();
-            
         }
 
         public void Close()
@@ -89,6 +89,7 @@ namespace TGE
         [STAThread]
         void GameLoop()
         {
+
             ActiveGame = this;
             Time();
             Initialize();
@@ -103,6 +104,13 @@ namespace TGE
                 Draw();
             }
             Exit(NativeMethods.CtrlType.CTRL_CLOSE_EVENT);
+        }
+
+        void OnExit(NativeMethods.CtrlType ctrlType)
+        {
+            Running = false;
+            Thread.Sleep(1000);
+            Exit(ctrlType);
         }
 
         public virtual void Initialize() { }
