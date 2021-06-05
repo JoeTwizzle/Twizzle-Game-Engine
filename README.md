@@ -3,8 +3,6 @@ A C# game engine similar to the [OLC game engine](https://github.com/OneLoneCode
 
 This project makes use of [SharpDX](https://github.com/sharpdx/SharpDX).
 
-Be aware that this project is still under developement.
-
 
 # Tutorial
 
